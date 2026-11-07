@@ -1,0 +1,77 @@
+@import 'tailwindcss';
+@import '@fontsource-variable/inter';
+@import '@fontsource-variable/source-serif-4';
+@import '@fontsource-variable/jetbrains-mono';
+
+/*
+ * AKSHARA design tokens — "Ink & Gold leaf".
+ * Ink-dark surfaces, paper-white text, indigo for interaction, gold for emphasis.
+ * Severity colours are fixed across the product and always paired with a label + icon.
+ */
+@theme {
+  --font-sans: 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-serif: 'Source Serif 4 Variable', ui-serif, Georgia, serif;
+  --font-mono: 'JetBrains Mono Variable', ui-monospace, monospace;
+
+  --color-ink-950: #07080d;
+  --color-ink-900: #0b0d14;
+  --color-ink-850: #10131c;
+  --color-ink-800: #151926;
+  --color-ink-700: #1f2435;
+  --color-ink-600: #2c3248;
+  --color-ink-500: #454c66;
+
+  --color-paper: #ecedf4;
+  --color-paper-dim: #a9aec4;
+  --color-paper-faint: #6f7590;
+
+  --color-accent: #8b93ff;
+  --color-accent-strong: #a5acff;
+  --color-accent-soft: #8b93ff26;
+  --color-gold: #f5c46b;
+  --color-gold-soft: #f5c46b1f;
+
+  --color-sev-critical: #f87171;
+  --color-sev-high: #fb923c;
+  --color-sev-medium: #fbbf24;
+  --color-sev-low: #60a5fa;
+  --color-sev-info: #94a3b8;
+  --color-ok: #4ade80;
+
+  --radius-card: 1rem;
+}
+
+@layer base {
+  html {
+    color-scheme: dark;
+    background: var(--color-ink-950);
+  }
+  body {
+    @apply bg-ink-950 font-sans text-paper antialiased;
+    font-feature-settings: 'cv11', 'ss01';
+  }
+  ::selection {
+    background: var(--color-accent-soft);
+    color: var(--color-paper);
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+}
+
+@layer components {
+  .surface {
+    @apply rounded-[var(--radius-card)] border border-ink-700/80 bg-ink-850/80 backdrop-blur-sm;
+  }
+  .label {
+    @apply text-xs font-medium tracking-[0.14em] text-paper-faint uppercase;
+  }
+  /* Faint ruled-paper texture used behind the app canvas. */
+  .ruled {
+    background-image:
+      radial-gradient(1200px 600px at 85% -10%, #8b93ff14, transparent 60%),
+      radial-gradient(900px 500px at -10% 110%, #f5c46b0d, transparent 60%),
+      repeating-linear-gradient(to bottom, transparent 0 31px, #ffffff05 31px 32px);
+  }
+}
