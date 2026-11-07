@@ -1,0 +1,24 @@
+# Secrets and local config
+.env
+*.env.local
+backend/.env
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+backend/var/
+
+# Node
+node_modules/
+frontend/dist/
+*.tsbuildinfo
+
+# OS / editors
+.DS_Store
+.idea/
+.vscode/
+.local/

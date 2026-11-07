@@ -1,0 +1,77 @@
+# AKSHARA local stack:  cp .env.example .env  (set secrets)  &&  docker compose up --build
+# Web UI: http://localhost:8080   API docs: http://localhost:8080/api/docs
+name: akshara
+
+x-backend-env: &backend-env
+  AKSHARA_ENVIRONMENT: ${AKSHARA_ENVIRONMENT:-development}
+  AKSHARA_DATABASE_URL: postgresql+asyncpg://akshara:${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}@db:5432/akshara
+  AKSHARA_REDIS_URL: redis://redis:6379/0
+  AKSHARA_JWT_SECRET: ${AKSHARA_JWT_SECRET:?set AKSHARA_JWT_SECRET in .env}
+  AKSHARA_COOKIE_SECURE: ${AKSHARA_COOKIE_SECURE:-false}
+
+services:
+  db:
+    image: pgvector/pgvector:pg16   # pgvector is used from Phase 9 (decision D9)
+    environment:
+      POSTGRES_USER: akshara
+      POSTGRES_DB: akshara
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}
+    volumes: [db-data:/var/lib/postgresql/data]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U akshara -d akshara"]
+      interval: 5s
+      retries: 20
+
+  redis:
+    image: redis:7-alpine
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes: [redis-data:/data]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      retries: 20
+
+  api:
+    image: akshara-api:dev
+    build: &api-build
+      context: .
+      dockerfile: infra/docker/api.Dockerfile
+      secrets: [extra_ca]
+    environment: *backend-env
+    volumes: [blobs:/data/blobs]
+    depends_on:
+      db: { condition: service_healthy }
+      redis: { condition: service_healthy }
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/api/v1/health')"]
+      interval: 10s
+      retries: 10
+
+  worker:
+    image: akshara-api:dev
+    command: ["celery", "-A", "app.workers.celery_app", "worker", "--loglevel=INFO", "--concurrency=2"]
+    environment: *backend-env
+    volumes: [blobs:/data/blobs]
+    depends_on:
+      redis: { condition: service_healthy }
+      api: { condition: service_healthy }
+
+  web:
+    image: akshara-web:dev
+    build:
+      context: .
+      dockerfile: infra/docker/web.Dockerfile
+      secrets: [extra_ca]
+    ports: ["8080:8080"]
+    depends_on:
+      api: { condition: service_healthy }
+
+# Optional extra CA for builds behind a TLS-inspecting proxy. Defaults to an empty file.
+secrets:
+  extra_ca:
+    file: ${AKSHARA_EXTRA_CA_FILE:-./infra/docker/no-extra-ca.pem}
+
+volumes:
+  db-data:
+  redis-data:
+  blobs:
