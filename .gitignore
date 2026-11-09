@@ -23,5 +23,5 @@ frontend/dist/
 .vscode/
 .local/
 
-# Redis snapshots from local runs
+
 dump.rdb
