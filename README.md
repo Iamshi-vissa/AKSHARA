@@ -1,11 +1,11 @@
-# <img src="docs/headers/h1-akshara.svg" alt="AKSHARA" height="60">
+# AKSHARA
 
 A platform for checking, fixing and creating professional documents (DOCX, PDF and PPTX).
 
 > **Status:** early. *Phase* 1 of 9 is finished: accounts, secure uploads, *version* history and the
 > document library work end to end. Document analysis starts in Phase 2.
 
-## <img src="docs/headers/h2-about.svg" alt="ABOUT" height="38">
+## ABOUT
 
 Reports, theses and slide decks often have to follow strict rules: heading levels, numbering,
 captions, margins, fonts and citation styles such as IEEE or APA. Checking all of that by hand is
@@ -18,7 +18,7 @@ writing new documents and slide decks from a short brief.
 Every uploaded file is kept as an unchangeable original, and each edit creates a new *version*, so
 nothing is ever lost.
 
-## <img src="docs/headers/h2-what-works-today-phase-1.svg" alt="WHAT WORKS TODAY (PHASE 1)" height="38">
+## WHAT WORKS TODAY (PHASE 1)
 
 - Sign up and log in, with secure sessions and rate-limited login
 - Upload DOCX, PDF and PPTX files up to 50 MB
@@ -27,7 +27,7 @@ nothing is ever lost.
 - Original files stored once and never changed, with a *version* record for each one
 - A document library with search, plus dashboard and settings pages
 
-## <img src="docs/headers/h2-planned-phases.svg" alt="PLANNED PHASES" height="38">
+## PLANNED PHASES
 
 | Phase | What it adds |
 |---|---|
@@ -43,7 +43,7 @@ nothing is ever lost.
 The full plan is in [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md), with design decisions in
 [docs/adr](docs/adr).
 
-## <img src="docs/headers/h2-how-it-works.svg" alt="HOW IT WORKS" height="38">
+## HOW IT WORKS
 
 1. The React web app sends the file to the API.
 2. The API checks the file is safe and really is the type it claims to be.
@@ -52,7 +52,7 @@ The full plan is in [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md), with design de
 4. Slower work will run in background workers through Celery and Redis. The worker is set up and
    tested in *Phase* 1, but the real jobs (parsing and checking) arrive in Phases 2 and 3.
 
-## <img src="docs/headers/h2-architecture.svg" alt="ARCHITECTURE" height="38">
+## ARCHITECTURE
 
 ```mermaid
 flowchart LR
@@ -68,7 +68,7 @@ flowchart LR
 
 The code is layered: routes call services, services call the database and storage, and the core rules never touch I/O. An automated check keeps those layers apart.
 
-## <img src="docs/headers/h2-tech-stack.svg" alt="TECH STACK" height="38">
+## TECH STACK
 
 <p align="center">
   <img src="https://img.shields.io/badge/Python-000000?style=flat-square&logo=python&logoColor=white" alt="Python">
@@ -94,9 +94,9 @@ The code is layered: routes call services, services call the database and storag
 | Infrastructure | Docker Compose, nginx |
 | Quality | pytest, Vitest, ruff, mypy (strict), import-linter, ESLint |
 
-## <img src="docs/headers/h2-getting-started.svg" alt="GETTING STARTED" height="38">
+## GETTING STARTED
 
-### <img src="docs/headers/h3-with-docker-easiest.svg" alt="WITH DOCKER (EASIEST)" height="28">
+### WITH DOCKER (EASIEST)
 
 ```bash
 git clone https://github.com/Iamshi-vissa/Akshara.git
@@ -109,7 +109,7 @@ Open <http://localhost:8080>.
 
 To make a JWT secret: `python -c "import secrets; print(secrets.token_urlsafe(48))"`
 
-### <img src="docs/headers/h3-for-local-development.svg" alt="FOR LOCAL DEVELOPMENT" height="28">
+### FOR LOCAL DEVELOPMENT
 
 You need Python 3.12+, [uv](https://docs.astral.sh/uv/), Node.js 22, PostgreSQL 16 and Redis 7.
 
@@ -123,7 +123,7 @@ make dev-web                    # web app at http://localhost:5173
 
 Run `make help` to see every command.
 
-## <img src="docs/headers/h2-running-the-tests.svg" alt="RUNNING THE TESTS" height="38">
+## RUNNING THE TESTS
 
 ```bash
 make lint     # ruff, mypy, import-linter, TypeScript and ESLint
@@ -133,7 +133,7 @@ make test     # 81 backend tests (needs PostgreSQL and Redis) and 13 frontend te
 The backend tests create and delete their own database, `akshara_test`. Don't point them at real
 data. A browser end-to-end check is described in [e2e/README.md](e2e/README.md).
 
-## <img src="docs/headers/h2-project-structure.svg" alt="PROJECT STRUCTURE" height="38">
+## PROJECT STRUCTURE
 
 ```
 backend/    FastAPI app, database migrations, background workers and tests
@@ -143,6 +143,6 @@ docs/       architecture plan and design decisions
 e2e/        browser end-to-end check
 ```
 
-## <img src="docs/headers/h2-license.svg" alt="LICENSE" height="38">
+## LICENSE
 
 MIT. See [LICENSE](LICENSE).
