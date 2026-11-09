@@ -64,8 +64,8 @@ The full plan is in [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md), with design de
 ### With Docker (easiest)
 
 ```bash
-git clone https://github.com/Iamshi-vissa/AKSHARA.git
-cd AKSHARA
+git clone https://github.com/Iamshi-vissa/Akshara.git
+cd Akshara
 cp .env.example .env    # then set AKSHARA_JWT_SECRET and POSTGRES_PASSWORD
 docker compose up -d --build
 ```
